@@ -56,7 +56,8 @@ var fs = require('fs'),
 
     it('should allow customization of httpClient', function (done) {
       var myHttpClient = {
-        request: function () { }
+        request: function () {
+        }
       };
       soap.createClient(__dirname + '/wsdl/default_namespace.wsdl',
         _.assign({ httpClient: myHttpClient }, meta.options),
@@ -92,15 +93,15 @@ var fs = require('fs'),
         });
       });
     });
-    
+
     it('should allow passing in XML strings', function (done) {
       soap.createClient(__dirname + '/wsdl/default_namespace.wsdl', _.assign({ envelopeKey: 'soapenv' }, meta.options), function (err, client) {
         assert.ok(client);
         assert.ok(!err);
-        
+
         var xmlStr = '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n\t<head>\n\t\t<title>404 - Not Found</title>\n\t</head>\n\t<body>\n\t\t<h1>404 - Not Found</h1>\n\t\t<script type="text/javascript" src="http://gp1.wpc.edgecastcdn.net/00222B/beluga/pilot_rtm/beluga_beacon.js"></script>\n\t</body>\n</html>';
-        client.MyOperation({_xml: xmlStr}, function (err, result, raw, soapHeader) {
-            assert.notEqual(raw.indexOf('html'), -1);
+        client.MyOperation({ _xml: xmlStr }, function (err, result, raw, soapHeader) {
+          assert.notEqual(raw.indexOf('html'), -1);
           done();
         });
       });
@@ -205,27 +206,27 @@ var fs = require('fs'),
         }, 'https://127.0.0.1:443');
       });
 
-      
-     it('should have xml request modified', function (done) {
-          soap.createClient(__dirname + '/wsdl/default_namespace.wsdl', meta.options, function(err, client) {
-              assert.ok(client);
-              assert.ok(!err);
 
-              client.MyOperation({}, function(err, result) {
-                      assert.ok(result);
-                      assert.ok(client.lastResponse);
-                      assert.ok(client.lastResponseHeaders);
+      it('should have xml request modified', function (done) {
+        soap.createClient(__dirname + '/wsdl/default_namespace.wsdl', meta.options, function (err, client) {
+          assert.ok(client);
+          assert.ok(!err);
 
-                      done();
-                  }, {
-                      postProcess: function(_xml) {
-                          return _xml.replace('soap', 'SOAP');
-                      }
-                  }
-              );
-          }, baseUrl);
-       });
-      
+          client.MyOperation({}, function (err, result) {
+              assert.ok(result);
+              assert.ok(client.lastResponse);
+              assert.ok(client.lastResponseHeaders);
+
+              done();
+            }, {
+              postProcess: function (_xml) {
+                return _xml.replace('soap', 'SOAP');
+              }
+            }
+          );
+        }, baseUrl);
+      });
+
       it('should have the correct extra header in the request', function (done) {
         soap.createClient(__dirname + '/wsdl/default_namespace.wsdl', meta.options, function (err, client) {
           assert.ok(client);
@@ -761,7 +762,7 @@ var fs = require('fs'),
             assert.equal('unit', requestEid);
             assert.equal(responseEid, requestEid);
             done();
-          }, {exchangeId : 'unit'});
+          }, { exchangeId: 'unit' });
         }, baseUrl);
       });
 
@@ -852,7 +853,8 @@ var fs = require('fs'),
         var mockRequestHandler = function (_request) {
           request = _request;
           return {
-            on: function () { }
+            on: function () {
+            }
           };
         };
         var options = _.assign({
@@ -873,12 +875,12 @@ var fs = require('fs'),
       });
 
       it('shall generate correct payload for methods with array parameter', function (done) {
-        soap.createClient(__dirname + '/wsdl/list_parameter.wsdl', function(err, client) {
+        soap.createClient(__dirname + '/wsdl/list_parameter.wsdl', function (err, client) {
           assert.ok(client);
           var pathToArrayContainer = 'TimesheetV201511Mobile.TimesheetV201511MobileSoap.AddTimesheet.input.input.PeriodList';
           var arrayParameter = _.get(client.describe(), pathToArrayContainer)['PeriodType[]'];
           assert.ok(arrayParameter);
-          client.AddTimesheet({input: {PeriodList: {PeriodType: [{PeriodId: '1'}]}}}, function() {
+          client.AddTimesheet({ input: { PeriodList: { PeriodType: [{ PeriodId: '1' }] } } }, function () {
             var sentInputContent = client.lastRequest.substring(client.lastRequest.indexOf('<input>') + '<input>'.length, client.lastRequest.indexOf('</input>'));
             assert.equal(sentInputContent, '<PeriodList><PeriodType><PeriodId>1</PeriodId></PeriodType></PeriodList>');
             done();
@@ -894,36 +896,36 @@ var fs = require('fs'),
 
           assert.ok(client);
           client.AddAttribute({
-            "Requests":{
-              "AddAttributeRequest":[
+            "Requests": {
+              "AddAttributeRequest": [
                 {
-                  "RequestIdx":1,
-                  "Identifier":{
-                    "SystemNamespace":"bugrepro",
-                    "ResellerId":1,
-                    "CustomerNum":"860692",
-                    "AccountUid":"80a6e559-4d65-11e7-bd5b-0050569a12d7"
+                  "RequestIdx": 1,
+                  "Identifier": {
+                    "SystemNamespace": "bugrepro",
+                    "ResellerId": 1,
+                    "CustomerNum": "860692",
+                    "AccountUid": "80a6e559-4d65-11e7-bd5b-0050569a12d7"
                   },
-                  "Attr":{
-                    "AttributeId":716,
-                    "IsTemplateAttribute":0,
-                    "ReadOnly":0,
-                    "CanBeModified":1,
-                    "Name":"domain",
-                    "AccountElements":{
-                      "AccountElement":[
+                  "Attr": {
+                    "AttributeId": 716,
+                    "IsTemplateAttribute": 0,
+                    "ReadOnly": 0,
+                    "CanBeModified": 1,
+                    "Name": "domain",
+                    "AccountElements": {
+                      "AccountElement": [
                         {
-                          "ElementId":1693,
-                          "Name":"domain",
-                          "Value":"foo",
-                          "ReadOnly":0,
-                          "CanBeModified":1
+                          "ElementId": 1693,
+                          "Name": "domain",
+                          "Value": "foo",
+                          "ReadOnly": 0,
+                          "CanBeModified": 1
                         }
                       ]
                     }
                   },
-                  "RequestedBy":"blah",
-                  "RequestedByLogin":"system"
+                  "RequestedBy": "blah",
+                  "RequestedByLogin": "system"
                 }
               ]
             }
